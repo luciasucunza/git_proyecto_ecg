@@ -12,12 +12,12 @@ import numpy as np
 
 
 n = 60000                                   #cantidad de muestras
+t = np.arange( 0, n, 1 )                    #rango de muestras
 
 
 #   APERTURA DE SEÑALES Y ANOTACIONES
 signal, fields = wfdb.io.rdsamp('/home/slucia/Documentos/Se/117',   sampto = n)
 ann = wfdb.rdann('/home/slucia/Documentos/Se/100', 'atr',           sampto = n)
-t = np.arange( 0, n, 1 )                    #rango de muestras
 
 
 #   CALCULO DE FFT
