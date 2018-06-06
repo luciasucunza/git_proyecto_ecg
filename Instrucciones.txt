@@ -13,6 +13,10 @@ git checkout .... = para cambiar al branch ....
 git add . = agrego todo
 
 
+Para volver a subir en el archivo tengo que poner
+    git push -u origin master
+
+
 
 
 -------------------
