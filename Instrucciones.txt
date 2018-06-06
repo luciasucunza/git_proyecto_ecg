@@ -1,0 +1,24 @@
+
+git status = ver como esta
+git add = agregar
+git commit = subir
+git commit -m "mi primer commit"
+
+git log = ver los commits
+
+.gitignore = archivo que contiene los nombres de las cosas que quiero ignorar
+
+git branch = generar otra version
+git checkout .... = para cambiar al branch ....
+git add . = agrego todo
+
+
+
+
+-------------------
+Working directory
+-> git add ->
+staging area
+-> git commit ->
+repository
+------------------
