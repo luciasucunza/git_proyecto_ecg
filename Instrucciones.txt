@@ -12,6 +12,11 @@ git branch = generar otra version
 git checkout .... = para cambiar al branch ....
 git add . = agrego todo
 
+Para descargar el archivo  
+	git clone https://github.com/luciasucunza/git_proyecto_ecg.git
+
+
+	
 
 Para volver a subir en el archivo tengo que poner
     git push -u origin master

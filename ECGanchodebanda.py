@@ -15,8 +15,9 @@ n = 40980                                           #cantidad de muestras
 t = np.arange( 0, n, 1 )                            #rango de muestras
 
 
-#   APERTURA DE SEÑAL y CALCULO DE LA FFT
-#%%
+
+#%%   APERTURA DE SEÑAL y CALCULO DE LA FFT
+
 signal, fields = wfdb.io.rdsamp('101', pb_dir='mitdb',   sampto = n)
 
 resf = fields.get( 'fs' )/n                         #Resolucion
@@ -25,14 +26,14 @@ rangof = np.arange( 0, 360 , resf)                  #Rango de frecuencias
 Y = np.fft.fft( signal[:,0] )                       #fft 
 Ymodu = abs( Y )                                    #Modulo de la media fft
 
+  
+#%%   APERTURA DE SEÑAL y CALCULO DE LA FFT
 
-#   CALCULO DE LA FFT RECORTADA PARA CIERTO PORCENTAJE DE ENERGIA
-#%% 
 Ymitad = Ymodu[range(n//2)] 
 YR = np.zeros( n, complex )
 i = 0  
 areaY = 0
-porcentaje = 0.98
+porcentaje = 1
 
     #Calculo de la integral entre 0 y ts/2 de Ynorm²
 for i in range( n//2 ):
@@ -54,15 +55,16 @@ for i in  np.arange( n//2-1, -1, -1 ):
 YmoduR = abs( YR )
 
 
-#   CALCULO DE ANTITRANSFORMADA DE LA FFT RECORTADA
-#%%
+#%%   CALCULO DE ANTITRANSFORMADA DE LA FFT RECORTADA
+
 signalYR = np.fft.ifft( YR )
 signalYR = signalYR.real
 
 
 
-#   GRAFICA DEL ESPECTRO ORIGINAL Y DEL RECORTADO
-#%% 
+
+#%%    GRAFICA DEL ESPECTRO ORIGINAL Y DEL RECORTADO
+
 plt.figure( 1 )
 plt.subplot( 211 )
 plt.plot( rangof, Ymodu , 'g' )
@@ -77,8 +79,8 @@ plt.grid( True )
 plt.show()  
 
     
-#   GRAFICO DE LA SEÑAL Y DE LA SEÑAL FILTRADA
-#%% 
+#%%     GRAFICO DE LA SEÑAL Y DE LA SEÑAL FILTRADA
+
 plt.figure(3)
 plt.subplot( 211 )
 plt.plot( t, signal[:,0], 'g'  )
