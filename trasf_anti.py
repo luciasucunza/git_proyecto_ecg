@@ -15,8 +15,7 @@ n = 40980
 t = np.arange( 0, n, 1 )                           
 
 #apertura
-signal, fields = wfdb.io.rdsamp('/home/slucia/Documentos/Se/101',   sampto = n)
-ann = wfdb.rdann('/home/slucia/Documentos/Se/100', 'atr',           sampto = n)
+signal, fields = wfdb.io.rdsamp('101', pb_dir='mitdb',   sampto = n)
 
 #Grafico de la señal
 plt.figure(1)
