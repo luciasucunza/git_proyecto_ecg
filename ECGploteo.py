@@ -13,13 +13,13 @@ import numpy as np
 
 #   APERTURA DE SEÑALES Y ANOTACIONES
 signals1, fields1 = wfdb.io.rdsamp('101', pb_dir='mitdb',           sampfrom = 0, sampto = 20)
-annS1 = wfdb.rdann('/home/slucia/Documentos/Se/101', 'atr',         sampfrom = 0, sampto = 20)
+annS1 = wfdb.rdann('101', pb_dir='mitdb',extension='atr',           sampfrom = 0, sampto = 20)
 
 signals2, fields2 = wfdb.io.rdsamp('/home/slucia/Documentos/Se/201',sampfrom = 0, sampto = 50)
 annS2 = wfdb.rdann('/home/slucia/Documentos/Se/201', 'atr',         sampfrom = 0, sampto = 50)
 
-record1 = wfdb.io.rdrecord('/home/slucia/Documentos/Se/101',        sampfrom = 0, sampto = 30)
-annR1 = wfdb.rdann('/home/slucia/Documentos/Se/101', 'atr',         sampfrom = 0, sampto = 30)
+record1 = wfdb.io.rdrecord('101', pb_dir='mitdb',                   sampfrom = 0, sampto = 30)
+annR1 = wfdb.rdann('101', pb_dir='mitdb',extension='atr',           sampfrom = 0, sampto = 30)
 
 record2 = wfdb.io.rdrecord('/home/slucia/Documentos/Se/201',        sampfrom = 0, sampto = 70)
 annR2 = wfdb.rdann('/home/slucia/Documentos/Se/201', 'atr',         sampfrom = 0, sampto = 70)

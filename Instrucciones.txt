@@ -15,13 +15,14 @@ git add . = agrego todo
 Para descargar el archivo  
 	git clone https://github.com/luciasucunza/git_proyecto_ecg.git
 
-
+Si estoy desde la compu de Windows tengo que abrir la consola desde el escritorio
 	
 
 Para volver a subir en el archivo tengo que poner
     git push -u origin master
 
 
+Existe una forma de generar un archivo que guarde los nombre de archivos que no quier que se suban
 
 
 -------------------
