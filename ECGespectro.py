@@ -14,71 +14,66 @@ import numpy as np
 n = 60000                                   #cantidad de muestras
 t = np.arange( 0, n, 1 )                    #rango de muestras
 
-
 #   APERTURA DE SEÑALES Y ANOTACIONES
-signal, fields = wfdb.io.rdsamp('/home/slucia/Documentos/Se/117',   sampto = n)
-ann = wfdb.rdann('/home/slucia/Documentos/Se/100', 'atr',           sampto = n)
+signal, fields = wfdb.io.rdsamp('117', pb_dir='mitdb',   sampto = n)
+ann = wfdb.rdann('117', pb_dir='mitdb', extension = 'atr',           sampto = n)
 
+#    CALCULO DE LA FFT 
+resf = fields.get( 'fs' )/n                #Resolucion
+rangof = np.arange( 0, 360 , resf)         #Rango de frecuencias
 
-#   CALCULO DE FFT
-T = n/fields.get('fs')                      #tiempo tomado de la señal
-frq = t/T                                   #rango de frecuencias
+Y = np.fft.fft( signal[:,0] )              #fft
 
-Y = np.fft.fft( signal[:,0] )              #fft normalizada
 frq = frq[range(n//2)]                     #porque es simetrico
 Y = Y[range(n//2)]    
-Ynorm = abs(Y)/n                           #Modulo de la fft normalizada
-
 
 #  GRAFICA DE SEÑAL, ANOTACIONES Y MODULO DEL ESPECTRO
 plt.figure(1)
+
 plt.subplot(211)
-plt.plot( t, signal[:,0], 'b', label='Señal')
-plt.plot( ann.sample, signal[ann.sample,0], 'ro',label='Anotaciones', )
-plt.legend()
+plt.plot( t, signal[:,0] )
 plt.title( 'Señal' )
 plt.grid( True )
 plt.xlim( -1, 1600 )
 
 plt.subplot(212)
-plt.plot( frq, Ynorm , 'g' )
+plt.plot( rangof, abs(Y)/(n//2)   , 'g' )
 plt.title( 'Espectro Normalizado' )
 plt.grid(True)
 plt.xlim( -0.2, 70 )
-plt.ylim( 0, 0.05)
 
 plt.show()  
 
 
 #   GRAFICA DE PARTE REAL E IMAGINARIA DEL ESPECTRO
 plt.figure(2)
+
 plt.subplot(211)
-plt.plot( frq, Y.real, 'g' )
+plt.plot( rangof, Y.real )
 plt.title( 'Parte Real' )
 plt.grid(True)
 plt.xlim( -1, 70 )
-#plt.ylim( -.02, .02 )
 
 plt.subplot(212)
-plt.plot( frq, Y.imag, 'g' )           
+plt.plot( rangof, Y.imag )           
 plt.title( 'Parte Imaginaria' )
 plt.grid(True)
 plt.xlim( -1, 70 )
-#plt.ylim( 0, 0.02 )
 
 plt.show()
 
 
 #   GRAFICA DE MODULO Y FASE DEL ESPECTRO
 plt.figure(3)
+
 plt.subplot(211)
-plt.plot( frq, abs(Y), 'g' )               
+plt.plot( rangof, abs(Y), 'g' )               
 plt.title( 'Modulo Sin Normalizar' )
 plt.grid(True)
 plt.xlim( -1, 70 )
 
 plt.subplot(212)
-plt.plot( frq, np.arctan(Y.imag/Y.real), 'g' )
+plt.plot( rangof, np.arctan(Y.imag/Y.real) )
 plt.title( 'Fase' )
 plt.grid(True)
 plt.xlim( -1, 70 )
