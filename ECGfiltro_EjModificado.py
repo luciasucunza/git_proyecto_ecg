@@ -85,4 +85,40 @@ axes_hdl.set_yticks(())
 
 
 plt.show()
-            
+
+#------CALCULO DE LA FFT -------
+resf = fs/n                                 
+rangof = np.arange( 0, 360 , resf)         
+
+FFT_ecg_one_lead = np.fft.fft( ecg_one_lead )
+FFT_ECG_f_butt = np.fft.fft( ECG_f_butt )  
+FFT_ECG_f_cheb = np.fft.fft( ECG_f_cheb )  
+FFT_ECG_f_cauer = np.fft.fft( ECG_f_cauer )  
+FFT_ECG_f_win = np.fft.fft( ECG_f_win )              
+
+rangof = rangof[range(n//2)]     
+
+FFT_ecg_one_lead = abs(FFT_ecg_one_lead[range(n//2)] ) / (n//2)    
+FFT_ECG_f_butt   = abs(FFT_ECG_f_butt[range(n//2)]   ) / (n//2)  
+FFT_ECG_f_cheb   = abs(FFT_ECG_f_cheb[range(n//2)]   ) / (n//2)  
+FFT_ECG_f_cauer  = abs(FFT_ECG_f_cauer[range(n//2)]  ) / (n//2)  
+FFT_ECG_f_win    = abs(FFT_ECG_f_win[range(n//2)]    ) / (n//2)  
+
+#-------Ploteo DE LA FFT --------         
+plt.plot( rangof, FFT_ecg_one_lead,   label='ECG', lw=2)
+plt.plot( rangof, FFT_ECG_f_butt,     label='Butter')
+plt.plot( rangof, FFT_ECG_f_cheb,     label='Cheby')
+plt.plot( rangof, FFT_ECG_f_cauer,    label='Cauer')
+plt.plot( rangof, FFT_ECG_f_win,      label='Win')
+
+ii = [0,n]
+plt.title('ECG filtering example from ' + str(ii[0]) + ' to ' + str(ii[1]) )
+plt.ylabel('Adimensional')
+plt.xlabel('Muestras (#)')
+
+axes_hdl = plt.gca()
+axes_hdl.legend()
+axes_hdl.set_yticks(())
+
+
+plt.show()
