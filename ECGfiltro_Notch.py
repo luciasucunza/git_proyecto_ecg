@@ -1,3 +1,5 @@
+#Filtro Notch elimina 60Hz
+
 import wfdb
 import matplotlib.pyplot as plt
 import numpy as np
@@ -21,6 +23,7 @@ ecg_f_notch = sig.lfilter(b,a,ecg_one_lead)
 
 
 plt.figure(1)
+plt.title('Señales')
 #plt.subplot(211)
 plt.plot(t, ecg_f_notch,  label='Notch')
 #plt.subplot(212)
@@ -41,15 +44,24 @@ FFT_ecg_f_notch = abs( FFT_ecg_f_notch[range(n//2)]    ) / (n//2)
 rangof = rangof[range(n//2)]     
 
 plt.figure(2)
-plt.plot(rangof, FFT_ecg_one_lead)
-plt.plot(rangof, FFT_ecg_f_notch)
+plt.title('FFT de las señales')
+plt.plot(rangof, FFT_ecg_one_lead, label='Sin Filtrar')
+plt.plot(rangof, FFT_ecg_f_notch,  label='Notch')
+plt.grid()
+plt.legend()
 plt.show()
 
+w,h = sig.freqz(b,a)
 
 plt.figure(3)
-w,h = sig.freqz(b,a)
-plt.plot(w*nyq_frec/np.pi,h)
-
-
-
+plt.title('Respuesta del Filtro')
+plt.subplot(211)
+plt.plot(w*nyq_frec/np.pi,abs(h))
+plt.grid()
+plt.ylabel('Modulo')
+plt.subplot(212)
+plt.plot(w*nyq_frec/np.pi, np.arctan(h.imag/h.real))
+plt.grid()
+plt.ylabel('Fase')
+plt.show()
 
