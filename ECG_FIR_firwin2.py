@@ -1,4 +1,4 @@
-# Prueba con WIN
+# Prueba con FIRWIN2
 
 import wfdb
 import matplotlib.pyplot as plt
@@ -19,16 +19,16 @@ nyq_frec = fs / 2
 #%%
 #------DISEÑO DE FILTRO-------
 ripple = -0.5
-atenua = -70.
+atenua = -40.
 
-ws1 = 1.0           #Hz
-wp1 = 4.0           #3Hz
-wp2 = 15.0          #Hz
-ws2 = 35.0          #Hz
+ws1 = 0.5           #Hz
+wp1 = 0.9           #Hz
+wp2 = 30.0          #Hz
+ws2 = 50.0          #Hz
 
 frecs = np.array([0.0, ws1, wp1, wp2, ws2, nyq_frec ]) / nyq_frec
-gains = np.array([atenua, atenua, ripple, ripple, atenua, atenua])
-gains = 10**(gains/20)
+gainsDB = np.array([atenua, atenua, ripple, ripple, atenua, atenua])
+gains = 10**(gainsDB/20)
 
 cant_coef = 501
 
@@ -40,13 +40,13 @@ w = w / np.pi * nyq_frec
 #%%
 #------PLOTEO DE LA RESPUESTA-------
 plt.figure(1)
-plt.plot(w,                 20 * np.log10(abs(hh_win)),     label='FIR-Win')
-plt.plot(frecs * nyq_frec,  20*np.log10(gains), 'rx',       label='plantilla' )
+plt.plot(w,                 20 * np.log10(abs(hh_win)),     label='FIR-Win' )
+plt.plot(frecs * nyq_frec,  gainsDB, 'rx',                  label='plantilla' )
 
-plt.title('FIR con FIRWIN2')
+plt.title('FIR con FIRWIN2 con ' + str(cant_coef) + ' coeficientes')
 plt.xlabel('Frequencia [Hz]')
 plt.ylabel('Modulo [dB]')
-plt.axis([0, nyq_frec, -80, 5 ])
+plt.axis([-10, nyq_frec, -80, 5 ])
 plt.legend()
 
 plt.grid()
