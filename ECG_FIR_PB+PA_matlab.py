@@ -1,19 +1,10 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Thu Sep 27 13:50:17 2018
-
-@author: luciasucunza
-"""
-
-
 # Módulos importantantes
 import scipy.signal as sig
 import numpy as np
-import matplotlib as mpl
 import matplotlib.pyplot as plt
 import scipy.io as sio
 
+#%%
 mat_struct = sio.loadmat('/home/luciasucunza/Escritorio/TP4_ecg.mat')
 
 ecg_one_lead = mat_struct['ecg_lead']
@@ -29,9 +20,11 @@ ripple = -0.05
 atenua = -40.
 
 #------Pasa Bajos-------
+#Tuve que aumentar la cantidad de coeficientes porque se aumento la nyq_freq, por lo 
+#tanto los saltos representan un menor porcentaje de la respuesta 
 wpb_p           = 20.0          #Hz
 wpb_s           = 30.0          #Hz
-cant_coef_pb    = 201
+cant_coef_pb    = 501
 
 frecs_pb    = np.array([0.0,    wpb_p,  wpb_s,  nyq_frec ])
 gainsDB_pb  = np.array([ripple, ripple, atenua, atenua   ])
@@ -44,7 +37,7 @@ w_pb = w_pb / np.pi * nyq_frec
 #------Pasa Altos-------
 wpa_s           = 0.2          #Hz
 wpa_p           = 3.0          #Hz
-cant_coef_pa    = 301
+cant_coef_pa    = 401
 
 frecs_pa    = np.array([0.0,    wpa_s,  wpa_p,  nyq_frec ])
 gainsDB_pa  = np.array([atenua, atenua, ripple, ripple   ])
@@ -99,6 +92,8 @@ plt.show()
 ECG_f_PBPA = sig.lfilter(fir_coeff, 1, ecg_one_lead)
 ECG_f_PBPA_dt = np.zeros(cant_muestras)
 
+t = np.arange(cant_muestras) / fs
+
 c = int((cant_coef_pa+cant_coef_pb)/2)
 
 for i in range (0, cant_muestras-c-1):
@@ -108,9 +103,8 @@ for i in range (cant_muestras-c, cant_muestras-1):
     ECG_f_PBPA_dt[i] = 0  
 
 plt.figure(3)
-plt.plot( ecg_one_lead,     label='ECG'     )
-#plt.plot( ECG_f_PBPA,       label='Fir'     )
-plt.plot( ECG_f_PBPA_dt,    label='Fir-dt'  )
+plt.plot( t, ecg_one_lead,     label='ECG'     )
+plt.plot( t, ECG_f_PBPA_dt,    label='Fir-dt'  )
 
 plt.title('ECG filtrado')
 plt.ylabel('Adimensional')

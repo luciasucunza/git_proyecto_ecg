@@ -7,9 +7,9 @@ import scipy.signal as sig
 
 #%%
 #------APERTURA DE LA SEÑAL-------
-n = 10500
+cant_muestras = 10500
 
-signals, fields = wfdb.io.rdsamp('108', pb_dir='mitdb',sampfrom = 0, sampto = n)
+signals, fields = wfdb.io.rdsamp('108', pb_dir='mitdb',sampfrom = 0, sampto = cant_muestras)
 
 ecg_one_lead = signals[:,0]
 fs = fields.get('fs')
@@ -92,22 +92,23 @@ plt.show()
 ECG_f_PBPA = sig.lfilter(fir_coeff, 1, ecg_one_lead)
 ECG_f_PBPA_dt = np.zeros(10500)
 
+t = np.arange(cant_muestras) / fs
+
 c = int((cant_coef_pa+cant_coef_pb)/2)
 
-for i in range (0, n-c-1):
+for i in range (0, cant_muestras-c-1):
     ECG_f_PBPA_dt[i] = ECG_f_PBPA[ i + c]
     
-for i in range (n-c, n-1):
+for i in range (cant_muestras-c, cant_muestras-1):
     ECG_f_PBPA_dt[i] = 0  
 
 plt.figure(3)
-plt.plot( ecg_one_lead,     label='ECG'     )
-#plt.plot( ECG_f_PBPA,       label='Fir'     )
-plt.plot( ECG_f_PBPA_dt,    label='Fir-dt'  )
+plt.plot( t, ecg_one_lead,     label='ECG'     )
+plt.plot( t, ECG_f_PBPA_dt,    label='Fir-dt'  )
 
 plt.title('ECG filtrado')
 plt.ylabel('Adimensional')
-plt.xlabel('Muestras (#)')
+plt.xlabel('Tiempo (s)')
 plt.legend()       
 
 
@@ -116,16 +117,16 @@ plt.show()
 
 #%%
 #------CALCULO DE LA FFT -------
-resf = fs/n                                 
+resf = fs/cant_muestras                               
 rangof = np.arange( 0, 360 , resf)         
 
 FFT_ecg_one_lead = np.fft.fft( ecg_one_lead )
 FFT_ECG_f_PBPA = np.fft.fft( ECG_f_PBPA )              
 
-rangof = rangof[range(n//2)]     
+rangof = rangof[range(cant_muestras//2)]     
 
-FFT_ecg_one_lead = abs(FFT_ecg_one_lead[range(n//2)] ) / (n//2)    
-FFT_ECG_f_PBPA    = abs(FFT_ECG_f_PBPA[range(n//2)]    ) / (n//2)  
+FFT_ecg_one_lead = abs(FFT_ecg_one_lead[range(cant_muestras//2)] ) / (cant_muestras//2)    
+FFT_ECG_f_PBPA    = abs(FFT_ECG_f_PBPA[range(cant_muestras//2)]    ) / (cant_muestras//2)  
 
 
 #%%
