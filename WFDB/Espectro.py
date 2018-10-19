@@ -1,11 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Wed May  9 10:34:46 2018
-
-@author: slucia
-"""
-
 import wfdb
 import matplotlib.pyplot as plt
 import numpy as np
