@@ -5,10 +5,10 @@ import scipy.io as sio
 import scipy.interpolate as interpol
 
 #%%
-mat_struct = sio.loadmat('/home/luciasucunza/git_proyecto_ecg/EjemplosFiltros/TP4_ecg.mat')
+mat_struct = sio.loadmat('/home/luciasucunza/git_proyecto_ecg/Filtros/TP4_ecg.mat')
 
 ecg_one_lead = mat_struct['ecg_lead']
-ecg_one_lead = ecg_one_lead.flatten(1)
+ecg_one_lead = ecg_one_lead.flatten()
 qrs_detections = mat_struct['qrs_detections']
 cant_muestras = len(ecg_one_lead)
 
@@ -25,8 +25,6 @@ ventana_inf = int(ventana_inf_ms / 1000 * fs)
 ventana_sup = int(ventana_sup_ms / 1000 * fs)
 ventana_len = ventana_inf + ventana_sup 
 
-
-np.zeros((2, 1))
 mat = np.zeros(( ventana_len, len(qrs_detections)), dtype=int)
 
 for j in range( len(qrs_detections) ):
@@ -148,18 +146,17 @@ y_mean_vent2    = f(n_new)
 #------ Ploteo Interpolacion -------
 plt.figure('Interpolacion de los parametros de cada ventana')
 plt.subplot(221)
-plt.plot( ni, median_aux,     'bo', n_new, y_median,     'g',  label='Mediana'      )
-plt.legend()
+plt.title('Mediana')
+plt.plot( ni, median_aux,     'bo', n_new, y_median,     'g' )
 plt.subplot(222)
-plt.plot( ni, mean_aux,       'bo', n_new, y_mean,       'g',  label='Media'        )
-plt.legend()   
+plt.title('Media')
+plt.plot( ni, mean_aux,       'bo', n_new, y_mean,       'g' )
 plt.subplot(223)
-plt.plot( ni, mean_vent_aux,  'bo', n_new, y_mean_vent,  'g',  label='Media con ventana 100/200')
-plt.legend()
+plt.title('Mediana con ventana 100/200')
+plt.plot( ni, mean_vent_aux,  'bo', n_new, y_mean_vent,  'g' )
 plt.subplot(224)
-plt.plot( ni, mean_vent2_aux, 'bo', n_new, y_mean_vent2, 'g',  label='Media con ventana 050/250')
-plt.legend()
-
+plt.title('Mediana con ventana 050/250')
+plt.plot( ni, mean_vent2_aux, 'bo', n_new, y_mean_vent2, 'g' )
 plt.show()
 
 #%%

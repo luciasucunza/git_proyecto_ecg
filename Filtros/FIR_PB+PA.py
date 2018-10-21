@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import scipy.io as sio
 
 #%%
-mat_struct = sio.loadmat('/home/luciasucunza/Escritorio/TP4_ecg.mat')
+mat_struct = sio.loadmat('/home/luciasucunza/git_proyecto_ecg/Filtros/TP4_ecg.mat')
 
 ecg_one_lead = mat_struct['ecg_lead']
 ecg_one_lead = ecg_one_lead.flatten(1)
@@ -20,8 +20,6 @@ ripple = -0.05
 atenua = -40.
 
 #------Pasa Bajos-------
-#Tuve que aumentar la cantidad de coeficientes porque se aumento la nyq_freq, por lo 
-#tanto los saltos representan un menor porcentaje de la respuesta 
 wpb_p           = 20.0          #Hz
 wpb_s           = 30.0          #Hz
 cant_coef_pb    = 501
@@ -118,12 +116,12 @@ plt.show()
 #%%
 #------CALCULO DE LA FFT -------
 resf = fs/cant_muestras                                 
-rangof = np.arange( 0, 360 , resf)         
+rangof = np.arange( 0, fs, resf)         
 
 FFT_ecg_one_lead = np.fft.fft( ecg_one_lead )
 FFT_ECG_f_PBPA = np.fft.fft( ECG_f_PBPA )              
 
-rangof = rangof[range(cant_muestras//2)]     
+rangof = rangof[(cant_muestras//2)]     
 
 FFT_ecg_one_lead = abs(FFT_ecg_one_lead[range(cant_muestras//2)] ) / (cant_muestras//2)    
 FFT_ECG_f_PBPA    = abs(FFT_ECG_f_PBPA[range(cant_muestras//2)]    ) / (cant_muestras//2)  

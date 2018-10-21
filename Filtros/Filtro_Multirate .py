@@ -5,7 +5,7 @@ import scipy.io as sio
 import scipy.signal as sig
 
 #%%
-mat_struct = sio.loadmat('/home/luciasucunza/git_proyecto_ecg/EjemplosFiltros/TP4_ecg.mat')
+mat_struct = sio.loadmat('/home/luciasucunza/git_proyecto_ecg/Filtros/TP4_ecg.mat')
 
 ecg_one_lead = mat_struct['ecg_lead']
 ecg_one_lead = ecg_one_lead.flatten(1)

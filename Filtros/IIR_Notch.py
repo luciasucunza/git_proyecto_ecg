@@ -13,20 +13,18 @@ signals, fields = wfdb.io.rdsamp('101', pb_dir='mitdb',sampfrom = 0, sampto = n)
 
 ecg_one_lead = signals[:,0]
 fs = fields.get('fs')
-wo = 60 / (fs/2)
 nyq_frec = fs / 2
-Q = 100
 t = np.arange(0,n/fs,1/fs)
     
+Q = 100
+wo = 60 / (fs/2)
 b,a = sig.iirnotch(wo,Q)
 ecg_f_notch = sig.lfilter(b,a,ecg_one_lead)
 
 
 plt.figure(1)
 plt.title('Señales')
-#plt.subplot(211)
 plt.plot(t, ecg_f_notch,  label='Notch')
-#plt.subplot(212)
 plt.plot(t, ecg_one_lead,  label='Sin Filtrar')
 plt.grid()
 plt.legend()
@@ -65,3 +63,19 @@ plt.grid()
 plt.ylabel('Fase')
 plt.show()
 
+
+import scipy.signal as sig
+import numpy as np
+import matplotlib.pyplot as plt
+import scipy.io as sio
+
+
+#------APERTURA DE LA SEÑAL-------
+mat_struct = sio.loadmat('/home/luciasucunza/git_proyecto_ecg/Filtros/TP4_ecg.mat')
+
+ecg_one_lead  = mat_struct['ecg_lead']
+ecg_one_lead  = ecg_one_lead.flatten()
+cant_muestras = len(ecg_one_lead)
+
+fs = 1000
+nyq_frec = fs / 2

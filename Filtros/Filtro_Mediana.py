@@ -1,11 +1,11 @@
-# MÃ³dulos importantantes
+# Modulos importantantes
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy.io as sio
 import scipy.signal as sig
 
 #%%
-mat_struct = sio.loadmat('/home/luciasucunza/git_proyecto_ecg/EjemplosFiltros/TP4_ecg.mat')
+mat_struct = sio.loadmat('/home/luciasucunza/git_proyecto_ecg/Filtros/TP4_ecg.mat')
 
 ecg_one_lead = mat_struct['ecg_lead']
 ecg_one_lead = ecg_one_lead.flatten(1)
@@ -44,18 +44,3 @@ plt.plot(t_zoom, ecg_F,     label='ECG flitrarado')
 plt.grid()
 plt.legend()
 plt.show()
-
-#%%
-
-
-#Calculo auxiliar para ver la componente, 50Hz
-resf = fs/c_muestras_zoom                           #Resolucion
-rangof = np.arange( 0, fs , resf)         #Rango de frecuencias
-F_ecg_zoom = np.fft.fft( ecg_zoom )              #fft
-F_ecg_zoom =  abs(F_ecg_zoom)/(c_muestras_zoom) 
-plt.figure(1)
-plt.plot( rangof, F_ecg_zoom  , 'g' )
-plt.title( 'Espectro Normalizado' )
-plt.grid(True)
-plt.xlim( -0.2, 70 )
-plt.show() 
