@@ -1,25 +1,31 @@
+# Modulos importantantes
 import wfdb
 import matplotlib.pyplot as plt
 import numpy as np
 
 
+#%%
+#------Apertura de la Señal y Anotaciones-------
 n = 60000                                   #cantidad de muestras
 t = np.arange( 0, n, 1 )                    #rango de muestras
 
-#   APERTURA DE SEÑALES Y ANOTACIONES
-signal, fields = wfdb.io.rdsamp('117', pb_dir='mitdb',   sampto = n)
-ann = wfdb.rdann('117', pb_dir='mitdb', extension = 'atr',           sampto = n)
+signal, fields  = wfdb.io.rdsamp( '117', pb_dir='mitdb',     sampto = n                      )
+ann             = wfdb.rdann(     '117', pb_dir='mitdb',     sampto = n, extension = 'atr'   )
 
-#    CALCULO DE LA FFT 
-resf = fields.get( 'fs' )/n                #Resolucion
-rangof = np.arange( 0, 360 , resf)         #Rango de frecuencias
 
-Y = np.fft.fft( signal[:,0] )              #fft
+#%%
+#------Calculo de la FFT-------
+resf    = fields.get( 'fs' )/n                #Resolucion
+rangof  = np.arange( 0, 360 , resf)         #Rango de frecuencias
 
-frq = frq[range(n//2)]                     #porque es simetrico
-Y = Y[range(n//2)]    
+Y       = np.fft.fft( signal[:,0] )              #fft
 
-#  GRAFICA DE SEÑAL, ANOTACIONES Y MODULO DEL ESPECTRO
+rangof  = rangof[range(n//2)]              #Por simetría          
+Y       = Y[range(n//2)]                        
+
+
+#%%
+#------Plote de la Señal, Anotaciones y Modulo del Espectro-------
 plt.figure(1)
 
 plt.subplot(211)
@@ -37,7 +43,8 @@ plt.xlim( -0.2, 70 )
 plt.show()  
 
 
-#   GRAFICA DE PARTE REAL E IMAGINARIA DEL ESPECTRO
+#%%
+#------Plote de parte Real e Imaginaria del Espectro-------
 plt.figure(2)
 
 plt.subplot(211)
@@ -55,7 +62,8 @@ plt.xlim( -1, 70 )
 plt.show()
 
 
-#   GRAFICA DE MODULO Y FASE DEL ESPECTRO
+#%%
+#------Plote de parte Real e Imaginaria del Espectro-------
 plt.figure(3)
 
 plt.subplot(211)

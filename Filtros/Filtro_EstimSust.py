@@ -1,10 +1,12 @@
-# MÃ³dulos importantantes
+# Modulos importantantes
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy.io as sio
 import scipy.interpolate as interpol
 
+
 #%%
+#------Apertura de la Señal-------
 mat_struct = sio.loadmat('/home/luciasucunza/git_proyecto_ecg/Filtros/TP4_ecg.mat')
 
 ecg_one_lead = mat_struct['ecg_lead']
@@ -16,8 +18,9 @@ fs = 1000
 nyq_frec = fs / 2
 t = np.arange(cant_muestras) / fs
 
+
 #%%
-#------     -------
+#------Separación en Ventanas-------
 ventana_inf_ms    = 300
 ventana_sup_ms    = 100
 
@@ -32,6 +35,7 @@ for j in range( len(qrs_detections) ):
     for i in range(ventana_len):    
         mat[i,j] = ecg_one_lead[ int(qrs_detections[j]) + i - ventana_inf  ]
         
+        
 #%%
 #------Ploteo de Todos las ventanas-------
 plt.figure('Todas las ventanas')
@@ -45,6 +49,7 @@ plt.legend()
 
 plt.grid()
 plt.show()
+
 
 #%%
 #------Calculo de la mediana y de diferentes medias para cada ventana-------
@@ -98,8 +103,8 @@ plt.title('ECG Media con Ventana')
 plt.grid()
 plt.axis([-10, 410, -12000, 32000])
 
-
 plt.show()
+
 
 #%%
 #------ Interpolacion -------
@@ -142,6 +147,8 @@ y_mean_vent     = f(n_new)
 
 f= interpol.interp1d( ni, mean_vent2_aux,   kind='cubic')
 y_mean_vent2    = f(n_new)
+
+
 #%%
 #------ Ploteo Interpolacion -------
 plt.figure('Interpolacion de los parametros de cada ventana')
@@ -159,6 +166,7 @@ plt.title('Mediana con ventana 050/250')
 plt.plot( ni, mean_vent2_aux, 'bo', n_new, y_mean_vent2, 'g' )
 plt.show()
 
+
 #%%
 #------ ObtenciÃon de ECG sin BL  -------
 ecg_median     = ecg_one_lead - y_median
@@ -167,6 +175,8 @@ ecg_mean_vent  = ecg_one_lead - y_mean_vent
 ecg_mean_vent2 = ecg_one_lead - y_mean_vent2
 
 zoom_region = np.arange( 0, 100000, dtype='uint')
+
+
 #%%
 #------ Ploteo de ECG sin BL  -------
 plt.figure('Señales Obtenidas')
@@ -181,3 +191,33 @@ plt.grid()
 plt.axis([-10, 100010, -12000, 32000])
 plt.legend()
 plt.show()
+
+
+#%%
+#------ Calculo de la FFT de BL-------
+resf    = fs/len(y_median)                
+rangof  = np.arange( 0, fs , resf)         
+
+Y_med   = np.fft.fft( y_median )              
+
+rangof  = rangof[range(cant_muestras//2)]    
+Y_med   = Y_med[range(cant_muestras//2)]    
+      
+
+#%%
+#------ Ploteo de la FFT de BL-------
+plt.figure(1)
+
+plt.subplot(211)
+plt.plot( t, y_median )
+plt.title( 'EstimacionLB' )
+plt.grid( True )
+plt.xlim( -1, 1600 )
+
+plt.subplot(212)
+plt.plot( rangof, abs(Y_med)/(cant_muestras//2)   , 'g' )
+plt.title( 'Espectro Normalizado' )
+plt.grid(True)
+plt.xlim( -0.2, 70 )
+
+plt.show()  
